@@ -1,0 +1,74 @@
+<app-navigation-menu></app-navigation-menu>
+<fieldset class="fieldsetContainer">
+  <legend align="center"><h2>Service registration form</h2></legend>
+  <mat-card-content>
+    <div class="container" [formGroup]="serviceRegistration">
+      <mat-label>Service name</mat-label><br>
+      <mat-form-field appearance="fill" class="width-25">
+        <mat-select  formControlName="serviceName" matNativeControl required [ngClass]="{ 'is-invalid': submitted && serviceRegistration.get('serviceName')?.errors }">
+          <mat-option value="" selected>Must select one</mat-option>
+          <mat-option value="place">Place</mat-option>
+          <mat-option value="house">House</mat-option>
+          <mat-option value="material">Material</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="(submitted || serviceRegistration.get('serviceName')?.touched) && serviceRegistration.get('serviceName')?.hasError('required')">
+        This field is required
+      </mat-error>
+     <br>
+      <mat-label>Service type </mat-label><br>
+      <mat-form-field appearance="fill" class="width-25">
+        <mat-select formControlName="serviceType" matNativeControl required>
+          <mat-option value="" selected>Must select one</mat-option>
+          <mat-option value="rentService">Rent service</mat-option>
+          <mat-option value="permanetService">Permanet service</mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted || serviceRegistration.get('serviceType')?.hasError('required')">
+          This field is required
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <mat-label>Price(ETB)</mat-label><br>
+      <mat-form-field appearance="fill" class="width-25">
+        <input type="number" matInput formControlName = "price" required
+        min="0" step="1" oninput="validity.valid||(value='');">
+        <mat-error *ngIf="submitted || serviceRegistration.get('price')?.hasError('required')">
+          This field is required
+        </mat-error>
+      </mat-form-field>
+
+     <h2>Service owner</h2>
+       <div formArrayName="serviceOwners">
+         <div *ngFor="let owner of getServiceOwners().controls; let i=index" [formGroupName]="i">
+           <mat-form-field appearance="fill" class="width-25">
+             <mat-label>First Name</mat-label>
+             <input matInput formControlName="fname" name="fname" required>
+           </mat-form-field>
+           <mat-form-field appearance="fill" class="width-25">
+             <mat-label>Last Name</mat-label>
+             <input matInput formControlName="lname" name="lname">
+           </mat-form-field><br>
+           <mat-form-field appearance="fill" class="width-25">
+             <mat-label>Email Address</mat-label>
+             <input matInput formControlName="email" name="email">
+           </mat-form-field>
+           <mat-form-field appearance="fill" class="width-25">
+             <mat-label>Phone Number</mat-label>
+             <input matInput formControlName="phone" name="phone">
+           </mat-form-field>
+           <div *ngIf="(getServiceOwners().at(1))">
+            <button mat-raised-button color="warn" (click)="removeServiceOwner(i)"><mat-icon>delete</mat-icon>remove </button>
+           </div>
+         </div>
+         <button mat-stroked-button color="accent" (click)="addServiceOwner()"><mat-icon>note_add</mat-icon> Add service owner </button>
+       </div>
+
+        <br>
+        <button mat-raised-button color="primary" [disabled]="!serviceRegistration.valid" (click)="submit()">Submit<mat-icon>store</mat-icon></button>
+        <button mat-raised-button color="primary" style="margin-left: 5%;" (click)="reset()">Reset<mat-icon>restore</mat-icon></button>
+    </div>
+    <!-- <div class="map"> <google-map></google-map></div> -->
+  </mat-card-content>
+</fieldset>
+
+

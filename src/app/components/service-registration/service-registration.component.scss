@@ -1,0 +1,109 @@
+fieldset
+{
+  margin: 5%;
+  border: 2px solid;
+  box-sizing: border-box;
+  grid-area: 1 / 1;
+  padding: 20px;
+  width: inherit;
+
+  .fieldsetContainer
+  {
+    display: block;
+    margin: 1.0em auto;
+    text-align: center;
+  }
+
+  .is-invalid
+  {
+    border: red;
+  }
+
+  mat-card-content
+  {
+    margin-top: 5%;
+
+    .map
+    {
+      width: 100%;
+      height: 100%;
+      margin: 5%;
+    }
+    .container
+    {
+      width: 100%;
+      height: 100%;
+      margin: 5%;
+      margin-left: 20%;
+
+      @media screen
+      {
+
+      }
+
+      .title
+      {
+        margin: 5%;
+      }
+
+      mat-label
+      {
+        padding-bottom: 20px;
+        font-size: 20px;
+      }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button
+    {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number]
+    {
+      -moz-appearance: textfield;
+    }
+      mat-form-field
+      {
+        margin-right: 15px;
+      }
+
+      .title
+      {
+        font-weight: 20px;
+        margin-left: 5%;
+      }
+
+      .example-radio-button
+      {
+        margin-left: 7px;
+      }
+      .mat-grid-tile
+      {
+        background:#fafafa;
+      }
+      .width-50
+      {
+        width: 49%;
+      }
+      .ml-1
+      {
+        margin-left: 1%;
+      }
+      .ml-2
+      {
+        margin-left: 2%;
+      }
+      .width-100
+      {
+        width: 100%;
+      }
+      .width-25
+      {
+        width: 25%;
+      }
+    }
+  }
+}
+
+
