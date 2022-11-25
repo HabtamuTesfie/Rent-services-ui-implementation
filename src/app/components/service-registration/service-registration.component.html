@@ -7,7 +7,7 @@
       <mat-form-field appearance="fill" class="width-25">
         <mat-select  formControlName="serviceName" matNativeControl required [ngClass]="{ 'is-invalid': submitted && serviceRegistration.get('serviceName')?.errors }">
           <mat-option value="" selected>Must select one</mat-option>
-          <mat-option value="place">Place</mat-option>
+          <mat-option value="land">Land</mat-option>
           <mat-option value="house">House</mat-option>
           <mat-option value="material">Material</mat-option>
         </mat-select>
@@ -46,20 +46,21 @@
            </mat-form-field>
            <mat-form-field appearance="fill" class="width-25">
              <mat-label>Last Name</mat-label>
-             <input matInput formControlName="lname" name="lname">
+             <input matInput formControlName="lname" name="lname" required>
            </mat-form-field><br>
            <mat-form-field appearance="fill" class="width-25">
              <mat-label>Email Address</mat-label>
-             <input matInput formControlName="email" name="email">
+             <input type="email" matInput formControlName="email" name="email" required>
            </mat-form-field>
            <mat-form-field appearance="fill" class="width-25">
              <mat-label>Phone Number</mat-label>
-             <input matInput formControlName="phone" name="phone">
+             <input matInput formControlName="phone" name="phone" required>
            </mat-form-field>
-           <div *ngIf="(getServiceOwners().at(1))">
+           <span *ngIf="getServiceOwners().at(1)">
             <button mat-raised-button color="warn" (click)="removeServiceOwner(i)"><mat-icon>delete</mat-icon>remove </button>
-           </div>
+          </span>
          </div>
+         <br>
          <button mat-stroked-button color="accent" (click)="addServiceOwner()"><mat-icon>note_add</mat-icon> Add service owner </button>
        </div>
 

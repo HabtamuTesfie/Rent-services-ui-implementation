@@ -39,7 +39,16 @@ export class ServiceRegistrationComponent implements OnInit
         serviceName: '',
         serviceType: '',
         price: '',
-        serviceOwners: this.fb.array([])
+        serviceOwners: this.fb.array(
+          [
+            this.fb.group(
+              {
+                fname: '',
+                lname: '',
+                email: '',
+                phone: ''
+              })
+          ])
     });
   }
 
