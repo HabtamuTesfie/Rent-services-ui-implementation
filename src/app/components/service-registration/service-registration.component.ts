@@ -1,20 +1,28 @@
-
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 /**
  * @Application Rent Service
  * @owner Habtamu Tesfie
  * @data 10/25/2022
  * Run at typescript
 */
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
-// -----------------------------------------------------------------------------
+import {IRentService, IState} from '../../model/rent-service.model';
+import {SharedService} from '../../services/shared.service';
+import {AddRentServiceAction} from '../../store/action/rent-service.action';
+import {ConfirmationComponent} from '../confirmation/confirmation.component';
+
+//-----------------------------------------------------------------------------
 /**
  * Service registration component
 */
-// -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 @Component({
   selector: 'app-service-registration',
   templateUrl: './service-registration.component.html',
@@ -22,17 +30,22 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class ServiceRegistrationComponent implements OnInit
 {
-  // ------------------------------------------------------ Exposed data members
+  //------------------------------------------------------ Exposed data members
   public serviceRegistration: FormGroup;
+  public services$: Observable<Array<IRentService>> | undefined;
 
   public submitted: boolean = false;
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * component intialization
   */
-  // -----------------------------------------------------------------------------
-  constructor(private fb: FormBuilder)
+  //-----------------------------------------------------------------------------
+  constructor(private fb:       FormBuilder,
+              private ssrv:     SharedService,
+              private store:    Store<IState>,
+              private dialog:   MatDialog,
+              private snackBar: MatSnackBar)
   {
     this.serviceRegistration = this.fb.group(
     {
@@ -53,40 +66,40 @@ export class ServiceRegistrationComponent implements OnInit
   }
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * component intialization
   */
-  // -----------------------------------------------------------------------------
-  ngOnInit(): void
+  //-----------------------------------------------------------------------------
+  public ngOnInit(): void
   {
-    console.log("ng onint implemnted");
+    this.services$ = this.store.select((store) => store.rentService);
 
     return;
   } // ngOnInit
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * Get list of service owners
    *
    * @return list service owners
   */
-  // -----------------------------------------------------------------------------
-  getServiceOwners() : FormArray
+  //-----------------------------------------------------------------------------
+  public getServiceOwners() : FormArray
   {
     return this.serviceRegistration.get("serviceOwners") as FormArray;
   } // serviceOwners
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * Get new service owner detail
    *
    * @return service owner detail
   */
-  // -----------------------------------------------------------------------------
-  getNewServiceOwnerDetail(): FormGroup
+  //-----------------------------------------------------------------------------
+  public getNewServiceOwnerDetail(): FormGroup
   {
     return this.fb.group(
     {
@@ -98,34 +111,34 @@ export class ServiceRegistrationComponent implements OnInit
   } // getNewServiceOwnerDetail
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * Add new service owner form group
   */
-  // -----------------------------------------------------------------------------
-  addServiceOwner():void
+  //-----------------------------------------------------------------------------
+  public addServiceOwner():void
   {
     this.getServiceOwners().push(this.getNewServiceOwnerDetail());
   } // addServiceOwner
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * Remove service owner form group
   */
-  // -----------------------------------------------------------------------------
-  removeServiceOwner(i:number):void
+  //-----------------------------------------------------------------------------
+  public removeServiceOwner(i:number):void
   {
     this.getServiceOwners().removeAt(i);
   } // removeServiceOwner
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * Manipulate form data to the next transaction
   */
-  // -----------------------------------------------------------------------------
-  submit():void
+  //-----------------------------------------------------------------------------
+  public submit():void
   {
     this.submitted = true;
 
@@ -134,22 +147,49 @@ export class ServiceRegistrationComponent implements OnInit
     {
       return;
     }
+    //---------------------------------------------------- Store in ngrx storage
+    this.store.dispatch
+    (
+      new AddRentServiceAction(this.serviceRegistration.value)
+    );
+   // this.reset();
 
-    // display form values on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.serviceRegistration.value, null, 4));
-    console.log("+++++++form data+++++++",this.serviceRegistration.value);
+    this.openDialog();
   } // submit
 
 
-  // -----------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------
   /**
    * Reset form data
   */
-  // -----------------------------------------------------------------------------
-  reset():void
+  //-----------------------------------------------------------------------------
+  public reset():void
   {
     this.submitted = false;
     this.serviceRegistration.reset();
   } // reset
+
+
+  //-----------------------------------------------------------------------------
+  /**
+   * Open the confirmation modal
+  */
+  //-----------------------------------------------------------------------------
+  private openDialog(): void
+  {
+    const dialogRef = this.dialog.open(ConfirmationComponent,
+    {
+      data:
+      {
+        message: 'Are you sure want to confirmed?',
+        buttonText:
+        {
+          ok: 'Save',
+          cancel: 'No'
+        }
+      }
+    });
+  } // openDialog
+
 
 } // ServiceRegistrationComponent

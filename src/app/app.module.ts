@@ -11,6 +11,11 @@ import {AppComponent} from './app.component';
 import {MaterialModule} from './modules/material.module';
 import {ServiceRegistrationComponent} from './components/service-registration/service-registration.component';
 import {NavigationMenuComponent} from './components/navigation-menu/navigation-menu.component';
+import {SharedService} from './services/shared.service';
+import {RentService} from './services/rent.service';
+import {ActionReducerMap, StoreModule} from '@ngrx/store';
+import {RentServiceReducer} from './store/reducer/rent-service.reducer';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 
 @NgModule(
 {
@@ -18,7 +23,8 @@ import {NavigationMenuComponent} from './components/navigation-menu/navigation-m
   [
     AppComponent,
     ServiceRegistrationComponent,
-    NavigationMenuComponent
+    NavigationMenuComponent,
+    ConfirmationComponent
   ],
   imports:
   [
@@ -30,9 +36,10 @@ import {NavigationMenuComponent} from './components/navigation-menu/navigation-m
     GoogleMapsModule,
     FormsModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot({rentService: RentServiceReducer} as ActionReducerMap<any,any>),
   ],
-  providers: [],
+  providers: [SharedService,RentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

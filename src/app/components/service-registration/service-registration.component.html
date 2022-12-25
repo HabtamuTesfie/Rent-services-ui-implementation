@@ -36,7 +36,6 @@
           This field is required
         </mat-error>
       </mat-form-field>
-
      <h2>Service owner</h2>
        <div formArrayName="serviceOwners">
          <div *ngFor="let owner of getServiceOwners().controls; let i=index" [formGroupName]="i">
@@ -63,7 +62,6 @@
          <br>
          <button mat-stroked-button color="accent" (click)="addServiceOwner()"><mat-icon>note_add</mat-icon> Add service owner </button>
        </div>
-
         <br>
         <button mat-raised-button color="primary" [disabled]="!serviceRegistration.valid" (click)="submit()">Submit<mat-icon>store</mat-icon></button>
         <button mat-raised-button color="primary" style="margin-left: 5%;" (click)="reset()">Reset<mat-icon>restore</mat-icon></button>
