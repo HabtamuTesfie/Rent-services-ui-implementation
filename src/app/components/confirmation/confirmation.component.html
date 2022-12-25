@@ -1,0 +1,28 @@
+<mat-dialog-content>
+	<p>
+		{{message}}
+	</p>
+<div *ngFor="let service of services | async">
+  <ul *ngIf="service.serviceType">
+   <strong>Service name</strong> : {{service.serviceName}}<br>
+   <strong>Service type</strong> :  {{service.serviceType}}<br>
+   <strong>Price</strong> : {{service.price}}<br>
+   <strong><h1>Service owners</h1></strong>
+  <div *ngFor="let serviceOwner of service.serviceOwners">
+    <strong>First name</strong> : {{serviceOwner.fname}}<br>
+    <strong>Last name</strong> : {{serviceOwner.lname}}<br>
+    <strong>Email</strong>  : {{serviceOwner.email}}<br>
+    <strong>Phone</strong> : {{serviceOwner.phone}}
+    <div>--------------------------------------</div>
+  </div>
+  </ul>
+</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+	<button mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="1">{{confirmButtonText}}</button>
+	<button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
+</mat-dialog-actions>
+
+
+
