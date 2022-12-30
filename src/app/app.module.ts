@@ -15,7 +15,10 @@ import {SharedService} from './services/shared.service';
 import {RentService} from './services/rent.service';
 import {ActionReducerMap, StoreModule} from '@ngrx/store';
 import {RentServiceReducer} from './store/reducer/rent-service.reducer';
-import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import {ConfirmationComponent} from './components/confirmation/confirmation.component';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HeadersInterceptor} from './interceptor/headers.interceptor';
+import { FindServiceComponent } from './components/find-service/find-service.component';
 
 @NgModule(
 {
@@ -24,7 +27,8 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
     AppComponent,
     ServiceRegistrationComponent,
     NavigationMenuComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    FindServiceComponent
   ],
   imports:
   [
@@ -35,11 +39,20 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
     RouterModule,
     GoogleMapsModule,
     FormsModule,
+    HttpClientModule,
     MaterialModule,
     ReactiveFormsModule,
     StoreModule.forRoot({rentService: RentServiceReducer} as ActionReducerMap<any,any>),
   ],
-  providers: [SharedService,RentService],
+  providers: [
+                SharedService,
+                RentService,
+                {
+                  provide: HTTP_INTERCEPTORS,
+                  useClass: HeadersInterceptor,
+                  multi: true
+                },
+             ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

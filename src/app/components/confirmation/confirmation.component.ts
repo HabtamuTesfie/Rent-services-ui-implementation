@@ -12,6 +12,7 @@ import {Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import {IRentService, IState} from '../../model/rent-service.model';
+import { RentService } from '../../services/rent.service';
 
 //-----------------------------------------------------------------------------
 /**
@@ -32,15 +33,17 @@ export class ConfirmationComponent implements OnInit
   public confirmButtonText: string = "Yes";
   public cancelButtonText:  string = "Cancel";
   public services:          Observable<Array<IRentService>> | undefined;
+  public recievedData:      IRentService | undefined;
 
   //-----------------------------------------------------------------------------
   /**
    * component construction
   */
   //-----------------------------------------------------------------------------
-  constructor (private store: Store<IState>,
-              private dialogRef: MatDialogRef<ConfirmationComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: any)
+  constructor (private rsrv: RentService,
+               private store: Store<IState>,
+               private dialogRef: MatDialogRef<ConfirmationComponent>,
+               @Inject(MAT_DIALOG_DATA) private data: any)
   {
     if (data)
     {
@@ -61,9 +64,13 @@ export class ConfirmationComponent implements OnInit
   //-----------------------------------------------------------------------------
   ngOnInit(): void
   {
+    this.rsrv.data.subscribe(data =>
+      {
+        this.recievedData = data;
+      })
     this.services = this.store.select((store) => store.rentService);
 
-    console.log("ng onint implemnted",this.services);
+    return;
   } // ngOnInit
 
 
@@ -74,6 +81,7 @@ export class ConfirmationComponent implements OnInit
   //-----------------------------------------------------------------------------
   onConfirmClick(): void
   {
+    console.log("This is the service call",this.rsrv.saveData(this.store.select((store) => store.rentService)));
     this.dialogRef.close(true);
   } // onConfirmClick
 
