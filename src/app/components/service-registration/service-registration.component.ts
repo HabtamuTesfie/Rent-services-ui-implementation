@@ -11,12 +11,13 @@ import {FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {IRentService, IState} from '../../model/rent-service.model';
 import {SharedService} from '../../services/shared.service';
 import {AddRentServiceAction} from '../../store/action/rent-service.action';
 import {ConfirmationComponent} from '../confirmation/confirmation.component';
+
+import {RentService} from '../../services/rent.service';
 
 //-----------------------------------------------------------------------------
 /**
@@ -43,9 +44,9 @@ export class ServiceRegistrationComponent implements OnInit
   //-----------------------------------------------------------------------------
   constructor(private fb:       FormBuilder,
               private ssrv:     SharedService,
+              private rsrv:     RentService,
               private store:    Store<IState>,
-              private dialog:   MatDialog,
-              private snackBar: MatSnackBar)
+              private dialog:   MatDialog)
   {
     this.serviceRegistration = this.fb.group(
     {
@@ -147,6 +148,9 @@ export class ServiceRegistrationComponent implements OnInit
     {
       return;
     }
+
+   this.rsrv.submitData(this.serviceRegistration.value);
+   
     //---------------------------------------------------- Store in ngrx storage
     this.store.dispatch
     (
@@ -154,7 +158,9 @@ export class ServiceRegistrationComponent implements OnInit
     );
    // this.reset();
 
+
     this.openDialog();
+
   } // submit
 
 

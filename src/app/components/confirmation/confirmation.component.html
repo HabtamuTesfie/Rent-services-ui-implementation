@@ -2,13 +2,12 @@
 	<p>
 		{{message}}
 	</p>
-<div *ngFor="let service of services | async">
-  <ul *ngIf="service.serviceType">
-   <strong>Service name</strong> : {{service.serviceName}}<br>
-   <strong>Service type</strong> :  {{service.serviceType}}<br>
-   <strong>Price</strong> : {{service.price}}<br>
+  <ul>
+   <strong>Service name</strong> : {{recievedData?.serviceName}}<br>
+   <strong>Service type</strong> :  {{recievedData?.serviceType}}<br>
+   <strong>Price</strong> : {{recievedData?.price}}<br>
    <strong><h1>Service owners</h1></strong>
-  <div *ngFor="let serviceOwner of service.serviceOwners">
+  <div *ngFor="let serviceOwner of recievedData?.serviceOwners">
     <strong>First name</strong> : {{serviceOwner.fname}}<br>
     <strong>Last name</strong> : {{serviceOwner.lname}}<br>
     <strong>Email</strong>  : {{serviceOwner.email}}<br>
@@ -16,7 +15,6 @@
     <div>--------------------------------------</div>
   </div>
   </ul>
-</div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
